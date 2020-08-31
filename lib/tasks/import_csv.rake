@@ -11,9 +11,6 @@ namespace :db do
       Merchant => 'db/data/merchants.csv',
       Transaction => 'db/data/transactions.csv'
     }
-    # data.each do |object, path|
-    #
-    # end
 
     data.each do |type, path|
       type.destroy_all
