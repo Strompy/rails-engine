@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'Merchants API' do
   before :each do
+    Merchant.destroy_all
+
     10.times do
       Merchant.create!(
         name: Faker::Company.name
@@ -39,7 +41,7 @@ RSpec.describe 'Merchants API' do
     merchant_params = { name: "Business!" }
     headers = {"CONTENT_TYPE" => "application/json"}
 
-    post '/api/v1/merchants', headers: headers, params: JSON.generate(merchant_params)
+    post '/api/v1/merchants', headers: headers, params: JSON.generate({merchant: merchant_params})
 
     merchant = Merchant.last
     returned_merchant = JSON.parse(response.body)['data']
@@ -48,6 +50,20 @@ RSpec.describe 'Merchants API' do
     expect(response.content_type).to eq("application/json")
     expect(returned_merchant["type"]).to eq("merchant")
     expect(returned_merchant["id"]).to eq(merchant.id.to_s)
+    expect(returned_merchant["attributes"]["name"]).to eq(merchant_params[:name])
+  end
+  it "can update an existing merchant" do
+    merchant_params = { name: "Business!" }
+    expect(@merchant.name).to_not eq(merchant_params[:name])
+    headers = { "Content-Type" => "application/json" }
+
+    put "/api/v1/merchants/#{@merchant.id}", headers: headers, params: JSON.generate({merchant: merchant_params})
+    returned_merchant = JSON.parse(response.body)['data']
+
+    expect(response).to be_successful
+    expect(response.content_type).to eq("application/json")
+    expect(returned_merchant["type"]).to eq("merchant")
+    expect(returned_merchant["id"]).to eq(@merchant.id.to_s)
     expect(returned_merchant["attributes"]["name"]).to eq(merchant_params[:name])
   end
 end
