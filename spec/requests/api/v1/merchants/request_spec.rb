@@ -41,7 +41,7 @@ RSpec.describe 'Merchants API' do
     merchant_params = { name: "Business!" }
     headers = {"CONTENT_TYPE" => "application/json"}
 
-    post '/api/v1/merchants', headers: headers, params: JSON.generate({merchant: merchant_params})
+    post '/api/v1/merchants', headers: headers, params: JSON.generate(merchant_params)
 
     merchant = Merchant.last
     returned_merchant = JSON.parse(response.body)['data']
@@ -57,7 +57,7 @@ RSpec.describe 'Merchants API' do
     expect(@merchant.name).to_not eq(merchant_params[:name])
     headers = { "Content-Type" => "application/json" }
 
-    put "/api/v1/merchants/#{@merchant.id}", headers: headers, params: JSON.generate({merchant: merchant_params})
+    put "/api/v1/merchants/#{@merchant.id}", headers: headers, params: JSON.generate(merchant_params)
     returned_merchant = JSON.parse(response.body)['data']
 
     expect(response).to be_successful
@@ -65,5 +65,16 @@ RSpec.describe 'Merchants API' do
     expect(returned_merchant["type"]).to eq("merchant")
     expect(returned_merchant["id"]).to eq(@merchant.id.to_s)
     expect(returned_merchant["attributes"]["name"]).to eq(merchant_params[:name])
+  end
+  it "can delete and existing merchant" do
+    expect(Merchant.count).to eq(10)
+
+    delete "/api/v1/merchants/#{@merchant.id}"
+
+    expect(response).to be_successful
+    expect(response.status).to eq(204)
+    expect(response.body).to be_empty
+    expect(Merchant.count).to eq(9)
+    expect{Merchant.find(@merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
 end
