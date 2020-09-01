@@ -30,6 +30,7 @@ gem 'factory_bot_rails'
 gem 'csv'
 gem 'awesome_print'
 gem 'fast_jsonapi'
+gem 'pry'
 # gem 'activerecord-reset-pk-sequence'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
