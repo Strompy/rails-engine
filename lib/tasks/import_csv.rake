@@ -11,16 +11,18 @@ namespace :db do
     }
 
     data.each do |type, path|
-      type.destroy_all
       puts "Destroying old #{type}s"
+      type.destroy_all
+      puts "Creating new #{type}s"
       CSV.foreach(path, headers: true) do |row|
         if row["unit_price"]
           row["unit_price"] = row["unit_price"].to_f / 100
         end
         type.create!(row.to_hash)
       end
-      puts "Created new #{type}s"
-      ActiveRecord::Base.connection.reset_pk_sequence!(type)
+    end
+    ActiveRecord::Base.connection.tables.each do |t|
+      ActiveRecord::Base.connection.reset_pk_sequence!(t)
     end
   end
 end
