@@ -104,4 +104,15 @@ RSpec.describe "Items API" do
     expect(returned_item[:attributes][:description]).to eq(@item.description)
     expect(returned_item[:attributes][:merchant_id]).to eq(@item.merchant_id)
   end
+  it 'can delete and existing item' do
+    expect(Item.count).to eq(10)
+
+    delete "/api/v1/items/#{@item.id}"
+
+    expect(response).to be_successful
+    expect(response.status).to eq(204)
+    expect(response.body).to be_empty
+    expect(Item.count).to eq(9)
+    expect{Item.find(@item.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
 end
