@@ -3,6 +3,8 @@ Rails.application.routes.draw do
       namespace :v1 do
         namespace :items do
           get '/:id/merchant', to: 'merchant#show'
+          get '/find', to: 'search#show'
+          get '/find_all', to: 'search#index'
         end
 
         namespace :merchants do
