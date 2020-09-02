@@ -199,5 +199,157 @@ RSpec.describe "Item Search" do
       @item1 = Item.first
       @item2 = Item.last
     end
+    it "returns items searched by ID fragment" do
+      id_frag = @item1.id[0]
+      get "/api/v1/items/find_all?id=#{id_frag}"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_items = parsed[:data]
+
+      expect(response).to be_successful
+      expect(response.content_type).to eq("application/json")
+      search_items.each do |search|
+        expect(search[:type]).to eq("item")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+        expect(search[:attributes][:unit_price].to_f).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:merchant_id]).to_not be nil
+      end
+    end
+    it "returns items searched by name fragment" do
+      name_frag = @item1.name[0..2]
+      get "/api/v1/items/find_all?id=#{name_frag}"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_items = parsed[:data]
+
+      expect(response).to be_successful
+      expect(response.content_type).to eq("application/json")
+      search_items.each do |search|
+        expect(search[:type]).to eq("item")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+        expect(search[:attributes][:unit_price].to_f).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:merchant_id]).to_not be nil
+      end
+    end
+    it "returns items searched by description fragment" do
+      description_frag = @item1.description[0..2]
+      get "/api/v1/items/find_all?id=#{description_frag}"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_items = parsed[:data]
+
+      expect(response).to be_successful
+      expect(response.content_type).to eq("application/json")
+      search_items.each do |search|
+        expect(search[:type]).to eq("item")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+        expect(search[:attributes][:unit_price].to_f).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:merchant_id]).to_not be nil
+      end
+    end
+    it "returns items searched by unit_price fragment" do
+      price_frag = @item1.unit_price.to_s[0..1]
+      get "/api/v1/items/find_all?id=#{price_frag}"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_items = parsed[:data]
+
+      expect(response).to be_successful
+      expect(response.content_type).to eq("application/json")
+      search_items.each do |search|
+        expect(search[:type]).to eq("item")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+        expect(search[:attributes][:unit_price].to_f).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:merchant_id]).to_not be nil
+      end
+    end
+    it "returns items searched by merchant_id" do
+      merchant_id = @item1.merchant_id
+      get "/api/v1/items/find_all?id=#{merchant_id}"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_items = parsed[:data]
+
+      expect(response).to be_successful
+      expect(response.content_type).to eq("application/json")
+      search_items.each do |search|
+        expect(search[:type]).to eq("item")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+        expect(search[:attributes][:unit_price].to_f).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:merchant_id]).to_not be nil
+      end
+    end
+    it "returns items searched by merchant_id fragment" do
+      merchant_id_frag = @item1.merchant_id.to_s[0..1]
+      get "/api/v1/items/find_all?id=#{merchant_id_frag}"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_items = parsed[:data]
+
+      expect(response).to be_successful
+      expect(response.content_type).to eq("application/json")
+      search_items.each do |search|
+        expect(search[:type]).to eq("item")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+        expect(search[:attributes][:unit_price].to_f).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:merchant_id]).to_not be nil
+      end
+    end
+    it "returns items searched by created_at fragment" do
+      created_at_frag = @item1.created_at.to_s[0..1]
+      get "/api/v1/items/find_all?id=#{created_at_frag}"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_items = parsed[:data]
+
+      expect(response).to be_successful
+      expect(response.content_type).to eq("application/json")
+      search_items.each do |search|
+        expect(search[:type]).to eq("item")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+        expect(search[:attributes][:unit_price].to_f).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:merchant_id]).to_not be nil
+      end
+    end
+    it "returns items searched by updated_at fragment" do
+      updated_at_frag = @item1.updated_at.to_s[0..1]
+      get "/api/v1/items/find_all?id=#{updated_at_frag}"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_items = parsed[:data]
+
+      expect(response).to be_successful
+      expect(response.content_type).to eq("application/json")
+      search_items.each do |search|
+        expect(search[:type]).to eq("item")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+        expect(search[:attributes][:unit_price].to_f).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:description]).to_not be nil
+        expect(search[:attributes][:merchant_id]).to_not be nil
+      end
+    end
   end
 end
