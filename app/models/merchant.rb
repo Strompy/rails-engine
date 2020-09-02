@@ -6,9 +6,8 @@ class Merchant < ApplicationRecord
 
   def self.search(search_params)
     merchants = Array.new
-    search_params.each do |column, search|
-      merchants << where("cast(#{column} as text) ILIKE ?", "%#{sanitize_sql_like(search)}%")
-      # where("cast(id as text) ILIKE ?", "%2420%")
+    search_params.each do |attribute, search|
+      merchants << where("cast(#{attribute} as text) ILIKE ?", "%#{sanitize_sql_like(search)}%")
     end
     merchants.flatten
   end
