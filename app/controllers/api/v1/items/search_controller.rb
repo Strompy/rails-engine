@@ -5,13 +5,12 @@ class Api::V1::Items::SearchController < ApplicationController
   end
 
   def show
-    require "pry"; binding.pry
     merchant = Item.search(search_params).first
     render json: ItemSerializer.new(merchant)
   end
 
   def search_params
-    params.permit(:id, :name, :description, :unit_price, :created_at, :updated_at)
+    params.permit(:id, :name, :description, :unit_price, :created_at, :updated_at, :merchant_id)
   end
 
 end
