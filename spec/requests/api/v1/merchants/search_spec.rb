@@ -63,7 +63,7 @@ RSpec.describe "Merchant Search" do
       expect(search_merchant[:attributes][:name]).to eq(@merchant2.name)
     end
     it "returns a single merchant with created_at fragment" do
-      get "/api/v1/merchants/find?created_at=2020"
+      get "/api/v1/merchants/find?created_at=20"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
       search_merchant = parsed[:data]
@@ -75,7 +75,7 @@ RSpec.describe "Merchant Search" do
       expect(search_merchant[:attributes][:name]).to eq(@merchant1.name)
     end
     it "returns a single merchant with update_at fragment" do
-      get "/api/v1/merchants/find?updated_at=2020"
+      get "/api/v1/merchants/find?updated_at=20"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
       search_merchant = parsed[:data]
