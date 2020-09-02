@@ -87,4 +87,83 @@ RSpec.describe "Merchant Search" do
       expect(search_merchant[:attributes][:name]).to eq(@merchant1.name)
     end
   end
+  describe "Multi-Finder" do
+    before :each do
+      Merchant.destroy_all
+      Item.destroy_all
+
+      @merchant1 = Merchant.create!(name: "Business!")
+      @merchant2 = Merchant.create!(name: "Total Real Company, Inc.")
+      @merchant3 = Merchant.create!(name: "No")
+
+      5.times do
+          @merchant1.items.create!(
+            name: Faker::Commerce.product_name,
+            unit_price: Faker::Commerce.price,
+            description: Faker::ChuckNorris.fact
+          )
+      end
+      5.times do
+          @merchant2.items.create!(
+            name: Faker::Commerce.product_name,
+            unit_price: Faker::Commerce.price,
+            description: Faker::ChuckNorris.fact
+          )
+      end
+      @item1 = Item.first
+      @item2 = Item.last
+    end
+    it "returns matching merchants searched by ID fragment" do
+      get "/api/v1/merchants/find_all?id=2"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_merchant = parsed[:data]
+
+      expect(response).to be_successful
+      expect(response.content_type).to eq("application/json")
+      expect(search_merchant.count).to eq(3)
+      expect(search_merchant.first[:type]).to eq("merchant")
+      expect(search_merchant.first[:id]).to eq(@merchant1.id.to_s)
+      expect(search_merchant.first[:attributes][:name]).to eq(@merchant1.name)
+    end
+    it "returns matching merchants when searched by fragment of name, case insensitive" do
+      get "/api/v1/merchants/find_all?name=E"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_merchant = parsed[:data]
+
+      expect(response).to be_successful
+      expect(search_merchant.count).to eq(2)
+      expect(search_merchant.first[:type]).to eq("merchant")
+      expect(search_merchant.first[:id]).to eq(@merchant1.id.to_s)
+      expect(search_merchant.first[:attributes][:name]).to eq(@merchant1.name)
+    end
+    it "returns matching merchants with created_at fragment" do
+      get "/api/v1/merchants/find_all?created_at=2020"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_merchant = parsed[:data]
+
+      expect(response).to be_successful
+      expect(response.content_type).to eq("application/json")
+      expect(search_merchant.count).to eq(3)
+      expect(search_merchant.first[:type]).to eq("merchant")
+      expect(search_merchant.first[:id]).to eq(@merchant1.id.to_s)
+      expect(search_merchant.first[:attributes][:name]).to eq(@merchant1.name)
+    end
+    it "returns a single merchant with update_at fragment" do
+      get "/api/v1/merchants/find_all?updated_at=2020"
+
+      parsed = JSON.parse(response.body, symbolize_names: true)
+      search_merchant = parsed[:data]
+
+      expect(response).to be_successful
+      expect(response.content_type).to eq("application/json")
+      expect(search_merchant[:type]).to eq("merchant")
+      expect(search_merchant.count).to eq(3)
+      expect(search_merchant.first[:type]).to eq("merchant")
+      expect(search_merchant.first[:id]).to eq(@merchant1.id.to_s)
+      expect(search_merchant.first[:attributes][:name]).to eq(@merchant1.name)
+    end
+  end
 end
