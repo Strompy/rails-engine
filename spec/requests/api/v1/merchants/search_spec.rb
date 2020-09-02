@@ -114,56 +114,67 @@ RSpec.describe "Merchant Search" do
       @item2 = Item.last
     end
     it "returns matching merchants searched by ID fragment" do
-      get "/api/v1/merchants/find_all?id=2"
+      id_frag = @merchant1.id[0]
+      get "/api/v1/merchants/find_all?id=#{id_frag}"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
-      search_merchant = parsed[:data]
+      search_merchants = parsed[:data]
 
       expect(response).to be_successful
       expect(response.content_type).to eq("application/json")
-      expect(search_merchant.count).to eq(3)
-      expect(search_merchant.first[:type]).to eq("merchant")
-      expect(search_merchant.first[:id]).to eq(@merchant1.id.to_s)
-      expect(search_merchant.first[:attributes][:name]).to eq(@merchant1.name)
+
+      search_merchants.each do |search|
+        expect(search[:type]).to eq("merchant")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+      end
     end
     it "returns matching merchants when searched by fragment of name, case insensitive" do
       get "/api/v1/merchants/find_all?name=E"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
-      search_merchant = parsed[:data]
+      search_merchants = parsed[:data]
 
       expect(response).to be_successful
-      expect(search_merchant.count).to eq(2)
-      expect(search_merchant.first[:type]).to eq("merchant")
-      expect(search_merchant.first[:id]).to eq(@merchant1.id.to_s)
-      expect(search_merchant.first[:attributes][:name]).to eq(@merchant1.name)
+      expect(search_merchants.count).to eq(2)
+
+      search_merchants.each do |search|
+        expect(search[:type]).to eq("merchant")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+      end
     end
     it "returns matching merchants with created_at fragment" do
-      get "/api/v1/merchants/find_all?created_at=2020"
+      get "/api/v1/merchants/find_all?created_at=20"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
-      search_merchant = parsed[:data]
+      search_merchants = parsed[:data]
 
       expect(response).to be_successful
       expect(response.content_type).to eq("application/json")
-      expect(search_merchant.count).to eq(3)
-      expect(search_merchant.first[:type]).to eq("merchant")
-      expect(search_merchant.first[:id]).to eq(@merchant1.id.to_s)
-      expect(search_merchant.first[:attributes][:name]).to eq(@merchant1.name)
+      expect(search_merchants.count).to eq(3)
+
+      search_merchants.each do |search|
+        expect(search[:type]).to eq("merchant")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+      end
     end
     it "returns a single merchant with update_at fragment" do
-      get "/api/v1/merchants/find_all?updated_at=2020"
+      get "/api/v1/merchants/find_all?updated_at=20"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
-      search_merchant = parsed[:data]
+      search_merchants = parsed[:data]
 
       expect(response).to be_successful
       expect(response.content_type).to eq("application/json")
-      expect(search_merchant[:type]).to eq("merchant")
-      expect(search_merchant.count).to eq(3)
-      expect(search_merchant.first[:type]).to eq("merchant")
-      expect(search_merchant.first[:id]).to eq(@merchant1.id.to_s)
-      expect(search_merchant.first[:attributes][:name]).to eq(@merchant1.name)
+      expect(search_merchants.count).to eq(3)
+
+      search_merchants.each do |search|
+        expect(search[:type]).to eq("merchant")
+        expect(search[:id]).to_not be nil
+        expect(search[:attributes][:name]).to_not be nil
+      end
     end
   end
 end
