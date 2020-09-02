@@ -78,7 +78,30 @@ RSpec.describe "Items API" do
     expect(returned_item[:attributes][:name]).to eq(item.name)
     expect(returned_item[:attributes][:unit_price].to_f).to eq(item.unit_price.to_f)
     expect(returned_item[:attributes][:description]).to eq(item.description)
-    expect(returned_item[:attributes][:description]).to eq(item.description)
     expect(returned_item[:attributes][:merchant_id]).to eq(item.merchant_id)
+  end
+  it "can update and existing item" do
+    item_params = {
+      name: "BUY NOW!!!",
+      unit_price: 17.40,
+    }
+    old_name = @item.name
+    old_price = @item.unit_price
+
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    patch "/api/v1/items/#{@item.id}", headers: headers, params: JSON.generate(item_params)
+
+    returned_item = JSON.parse(response.body, symbolize_names: true)[:data]
+
+    expect(response).to be_successful
+    expect(response.content_type).to eq("application/json")
+    expect(returned_item[:type]).to eq("item")
+    expect(returned_item[:id]).to eq(@item.id.to_s)
+    expect(returned_item[:attributes][:name]).to_not eq(old_name)
+    expect(returned_item[:attributes][:name]).to eq(item_params[:name])
+    expect(returned_item[:attributes][:unit_price].to_f).to_not eq(old_price.to_f)
+    expect(returned_item[:attributes][:description]).to eq(@item.description)
+    expect(returned_item[:attributes][:merchant_id]).to eq(@item.merchant_id)
   end
 end
