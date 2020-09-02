@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Items API" do
   before :each do
+    Merchant.destroy_all
     Item.destroy_all
 
     @merchant1 = Merchant.create!(name: "Business!")
