@@ -27,7 +27,6 @@ RSpec.describe "Items API" do
   it "sends a list of items" do
     get '/api/v1/items'
 
-
     parsed = JSON.parse(response.body, symbolize_names: true)
     items = parsed[:data]
 
@@ -41,5 +40,21 @@ RSpec.describe "Items API" do
     expect(items.first[:attributes][:description]).to eq(@item.description)
     expect(items.first[:attributes][:description]).to eq(@item.description)
     expect(items.first[:attributes][:merchant_id]).to eq(@item.merchant_id)
+  end
+  it "can send a single item" do
+    get "/api/v1/items/#{@item.id}"
+
+    parsed = JSON.parse(response.body, symbolize_names: true)
+    item = parsed[:data]
+
+    expect(response).to be_successful
+    expect(response.content_type).to eq("application/json")
+    expect(item[:type]).to eq("item")
+    expect(item[:id]).to eq(@item.id.to_s)
+    expect(item[:attributes][:name]).to eq(@item.name)
+    expect(item[:attributes][:unit_price].to_f).to eq(@item.unit_price.to_f)
+    expect(item[:attributes][:description]).to eq(@item.description)
+    expect(item[:attributes][:description]).to eq(@item.description)
+    expect(item[:attributes][:merchant_id]).to eq(@item.merchant_id)
   end
 end
