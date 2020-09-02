@@ -26,15 +26,14 @@ RSpec.describe "Merchant Search" do
       @item1 = Item.first
       @item2 = Item.last
     end
-    it "returns an item searched by ID" do
-      get "/api/v1/items/find?id=#{@item1.id}"
+    it "returns a merchant searched by ID" do
+      get "/api/v1/merchants/find?id=#{@merchant1.id}"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
       search_merchant = parsed[:data]
 
       expect(response).to be_successful
       expect(response.content_type).to eq("application/json")
-      expect(search_merchant.count).to eq(1)
       expect(search_merchant[:type]).to eq("merchant")
       expect(search_merchant[:id]).to eq(@merchant1.id.to_s)
       expect(search_merchant[:attributes][:name]).to eq(@merchant1.name)
