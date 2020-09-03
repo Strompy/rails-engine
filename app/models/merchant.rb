@@ -17,7 +17,7 @@ class Merchant < ApplicationRecord
 
   def self.find_most_revenue(revenue_params)
     quantity = revenue_params[:quantity]
-    Merchant.joins(:invoice_items, :transactions).
+    Merchant.joins(invoices: [:invoice_items, :transactions]).
     select("merchants.*, SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue").
     where("transactions.result='success'").
     group(:id).
