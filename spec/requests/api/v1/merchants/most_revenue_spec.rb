@@ -52,7 +52,7 @@ RSpec.describe "Business Intelligence" do
     expect(results.first[:attributes][:name]).to eq(@merchant1.name)
     expect(results.last[:attributes][:name]).to eq(@merchant2.name)
   end
-  it "return a variable number of merchants ranked by total revenue" do
+  it "return a single merchant ranked by total revenue" do
     get "/api/v1/merchants/most_revenue?quantity=1"
 
     parsed = JSON.parse(response.body, symbolize_names: true)
