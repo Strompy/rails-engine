@@ -3,6 +3,9 @@ class Merchant < ApplicationRecord
 
   has_many :items
   has_many :invoices
+  has_many :invoice_items, through: :invoices
+  has_many :transactions, through: :invoices
+  # has_many :customers, through: :invoices
 
   def self.search(search_params)
     merchants = Array.new
@@ -10,5 +13,15 @@ class Merchant < ApplicationRecord
       merchants << where("cast(#{attribute} as text) ILIKE ?", "%#{sanitize_sql_like(search)}%")
     end
     merchants.flatten
+  end
+
+  def self.find_most_revenue(revenue_params)
+    quantity = revenue_params[:quantity]
+    Merchant.joins(:invoice_items, :transactions).
+    select("merchants.*, SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue").
+    where("transactions.result='success'").
+    group(:id).
+    order("revenue DESC").
+    limit(quantity)
   end
 end
