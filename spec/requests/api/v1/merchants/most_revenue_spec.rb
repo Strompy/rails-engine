@@ -19,7 +19,7 @@ RSpec.describe "Business Intelligence" do
     5.times do
         @merchant2.items.create!(
           name: Faker::Commerce.product_name,
-          unit_price: Faker::Commerce.price,
+          unit_price: 0.1,
           description: Faker::ChuckNorris.fact
         )
     end
