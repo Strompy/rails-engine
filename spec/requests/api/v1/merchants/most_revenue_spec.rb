@@ -45,8 +45,8 @@ RSpec.describe "Business Intelligence" do
     expect(response).to be_successful
     expect(response.content_type).to eq("application/json")
     expect(results.count).to eq(2)
-    expect(results.first[:id]).to eq(@merchant1.id)
-    expect(results.last[:id]).to eq(@merchant2.id)
+    expect(results.first[:id]).to eq(@merchant1.id.to_s)
+    expect(results.last[:id]).to eq(@merchant2.id.to_s)
     expect(results.first[:type]).to eq('merchant')
     expect(results.last[:type]).to eq('merchant')
     expect(results.first[:attributes][:name]).to eq(@merchant1.name)
@@ -61,8 +61,8 @@ RSpec.describe "Business Intelligence" do
     expect(response).to be_successful
     expect(response.content_type).to eq("application/json")
     expect(results.count).to eq(1)
-    expect(results[:id]).to eq(@merchant1.id)
-    expect(results[:type]).to eq('merchant')
-    expect(results[:attributes][:name]).to eq(@merchant1.name)
+    expect(results.first[:id]).to eq(@merchant1.id.to_s)
+    expect(results.first[:type]).to eq('merchant')
+    expect(results.first[:attributes][:name]).to eq(@merchant1.name)
   end
 end
