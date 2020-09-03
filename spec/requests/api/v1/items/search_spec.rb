@@ -220,7 +220,7 @@ RSpec.describe "Item Search" do
     end
     it "returns items searched by name fragment" do
       name_frag = @item1.name[0..2]
-      get "/api/v1/items/find_all?id=#{name_frag}"
+      get "/api/v1/items/find_all?name=#{name_frag}"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
       search_items = parsed[:data]
@@ -239,7 +239,7 @@ RSpec.describe "Item Search" do
     end
     it "returns items searched by description fragment" do
       description_frag = @item1.description[0..2]
-      get "/api/v1/items/find_all?id=#{description_frag}"
+      get "/api/v1/items/find_all?description=#{description_frag}"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
       search_items = parsed[:data]
@@ -258,7 +258,7 @@ RSpec.describe "Item Search" do
     end
     it "returns items searched by unit_price fragment" do
       price_frag = @item1.unit_price.to_s[0..1]
-      get "/api/v1/items/find_all?id=#{price_frag}"
+      get "/api/v1/items/find_all?unit_price=#{price_frag}"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
       search_items = parsed[:data]
@@ -277,7 +277,7 @@ RSpec.describe "Item Search" do
     end
     it "returns items searched by merchant_id" do
       merchant_id = @item1.merchant_id
-      get "/api/v1/items/find_all?id=#{merchant_id}"
+      get "/api/v1/items/find_all?merchant_id=#{merchant_id}"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
       search_items = parsed[:data]
@@ -296,7 +296,7 @@ RSpec.describe "Item Search" do
     end
     it "returns items searched by merchant_id fragment" do
       merchant_id_frag = @item1.merchant_id.to_s[0..1]
-      get "/api/v1/items/find_all?id=#{merchant_id_frag}"
+      get "/api/v1/items/find_all?merchant_id=#{merchant_id_frag}"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
       search_items = parsed[:data]
@@ -315,7 +315,7 @@ RSpec.describe "Item Search" do
     end
     it "returns items searched by created_at fragment" do
       created_at_frag = @item1.created_at.to_s[0..1]
-      get "/api/v1/items/find_all?id=#{created_at_frag}"
+      get "/api/v1/items/find_all?created_at=#{created_at_frag}"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
       search_items = parsed[:data]
@@ -334,7 +334,7 @@ RSpec.describe "Item Search" do
     end
     it "returns items searched by updated_at fragment" do
       updated_at_frag = @item1.updated_at.to_s[0..1]
-      get "/api/v1/items/find_all?id=#{updated_at_frag}"
+      get "/api/v1/items/find_all?updated_at=#{updated_at_frag}"
 
       parsed = JSON.parse(response.body, symbolize_names: true)
       search_items = parsed[:data]
